@@ -1,4 +1,5 @@
 ---
 resources:
+  - idunion.web.frontend/
   - openldap/
   - traefik/

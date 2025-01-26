@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idunion-web-frontend
+  namespace: idunion
+  labels:
+    app: idunion-web-frontend
+spec:
+  selector:
+    matchLabels:
+      app: idunion-web-frontend
+  template:
+    metadata:
+      labels:
+        app: idunion-web-frontend
+    spec:
+      imagePullSecrets:
+        - name: container-registry-credentials
+      containers:
+        - name: idunion-web-frontend
+          image: "ghcr.io/pp23/pp23/idunion.web:main"
+          ports:
+            - containerPort: 8080
+              name: frontend
