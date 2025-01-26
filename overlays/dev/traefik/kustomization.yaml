@@ -1,0 +1,8 @@
+---
+resources:
+  - ../../../base/traefik/
+
+namespace: traefik
+
+generators:
+  - ./generator-config

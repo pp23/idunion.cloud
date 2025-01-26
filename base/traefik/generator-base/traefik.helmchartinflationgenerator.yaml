@@ -1,0 +1,49 @@
+---
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: traefik
+name: traefik
+includeCRDs: true
+releaseName: traefik
+version: 34.1.0
+repo: https://traefik.github.io/charts
+valuesInline:
+    
+  logs:
+    general:
+      level: INFO
+    access:
+      enabled: true
+  experimental:
+    abortOnPluginFailure: true
+    plugins:
+      ldapAuth:
+        moduleName: "github.com/wiltonsr/ldapAuth"
+        version: "v0.1.4"
+  globalArguments:
+    - "--global.checknewversion"
+    # "--global.sendanonymoususage"
+  additionalArguments: []
+  extraObjects: []
+  #  - |
+  #    apiVersion: traefik.containo.us/v1alpha1
+  #    kind: Middleware
+  #    metadata:
+  #      name: ldapauth
+  #    spec:
+  #      plugin:
+  #        ldapAuth:
+  #          Attribute: cn
+  #          BaseDn: ou=users,dc=example,dc=org
+  #          Enabled: "true"
+  #          LogLevel: DEBUG
+  #          Port: 389
+  #          Url: ldap://openldap.ldap.svc.cluster.local
+  ingressRoute:
+    dashboard:
+      enabled: true
+      entryPoints:
+        - web
+      middlewares:
+        - name: ldapAuth

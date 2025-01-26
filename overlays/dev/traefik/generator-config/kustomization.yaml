@@ -1,0 +1,35 @@
+---
+resources:
+  - ../../../../base/traefik/generator-base/
+
+patches:
+  - patch: |
+      # add test cors policy to allow access from vue test page
+      - op: add
+        path: /valuesInline/extraObjects/-
+        value: |
+          apiVersion: traefik.io/v1alpha1
+          kind: Middleware
+          metadata:
+            name: test-header
+          spec:
+            headers:
+              accessControlAllowCredentials: true
+              accessControlAllowHeaders:
+                - Authorization
+              accessControlAllowMethods:
+                - '*'
+              accessControlAllowOriginList:
+                - http://localhost:5173
+      # order of middlewares is important to set cors header before auth failed
+      - op: replace
+        path: /valuesInline/ingressRoute/dashboard/middlewares
+        value:
+          - name: test-header
+          - name: "ldapAuth@file"
+      - op: add
+        path: /valuesInline/additionalArguments/-
+        value: "--api.insecure=true"
+    target:
+      kind: HelmChartInflationGenerator
+      name: traefik

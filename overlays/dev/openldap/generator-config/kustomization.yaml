@@ -1,0 +1,16 @@
+---
+resources:
+  - ../../../../base/openldap/generator-base/
+
+patches:
+  - patch: |
+      - op: add
+        path: /valuesInline/replicaCount
+        value: 1
+      - op: add
+        path: /valuesInline/replication
+        value:
+          enabled: false
+    target:
+      kind: HelmChartInflationGenerator
+      name: openldap

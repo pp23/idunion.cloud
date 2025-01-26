@@ -1,0 +1,25 @@
+---
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: openldap
+name: openldap-stack-ha
+includeCRDs: true
+releaseName: openldap
+version: 4.1.1
+repo: https://jp-gouin.github.io/helm-openldap/
+valuesInline:
+  replicaCount: 3
+  customSchemaFiles:
+    argon2.module.ldif: |-
+      dn: cn=module{0},cn=config
+      changetype: add
+      objectClass: olcModuleList
+      cn: module{0}
+      olcModulePath: /opt/bitnami/openldap/lib/openldap/
+      olcModuleLoad: argon2.so
+
+      dn: olcDatabase={-1}frontend,cn=config
+      changetype: modify
+      add: olcPasswordHash
+      olcPasswordHash: {ARGON2}

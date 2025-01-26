@@ -1,0 +1,8 @@
+---
+resources:
+  - ../../../base/openldap/
+
+namespace: ldap
+
+generators:
+  - ./generator-config
